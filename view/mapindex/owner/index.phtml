@@ -1,0 +1,43 @@
+<?php 
+if (sizeof($data) === 0) {
+    echo "No Records Retrieved.";
+    return;
+}
+?>
+<div class="container">
+	<table class="table table-striped">
+	<thead>
+		<tr>
+	<?php 
+	   $header = array_keys($this->data[0]); 
+	   foreach ($header as $key) {
+	       if ($key == $this->primary_key) { continue; }
+	       echo "<th>$key</th>";
+	   }
+   ?>
+   			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($this->data as $record) : ?>
+		<tr>
+			<?php foreach ($record as $key => $value) : ?>
+				<?php if ($key == $this->primary_key) { continue; } ?>
+				<td><?php echo $value; ?></td>
+			<?php endforeach; ?>
+			<td>
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    	<i class="fas fa-bars"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    	<a class="dropdown-item" href="<?=$this->url('owners/default', ['action' => 'update', strtolower($this->primary_key) => $record[$this->primary_key]])?>">Edit</a>
+                    	<a class="dropdown-item bg-danger text-white" href="<?=$this->url('owners/default', ['action' => 'delete', strtolower($this->primary_key) => $record[$this->primary_key]])?>">Delete</a>
+                    </div>
+                </div>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+	</table>
+</div>

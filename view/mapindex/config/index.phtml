@@ -1,0 +1,13 @@
+<pre>
+Data Directory : <?php if (!$this->data_writable) { "Not "; }?>Writable
+</pre>
+<?php 
+$form = $this->mapsImportForm;
+
+$form->prepare();
+$form->setAttribute('action', $this->url('maps/import'));
+$form->setAttribute('method', 'post');
+
+echo $this->form($form);
+?>
+<a href="<?=$this->url('maps/config', ['action'=>'clear'])?>" class="btn btn-danger">Truncate Database Tables</a>

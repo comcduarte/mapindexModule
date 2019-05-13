@@ -1,30 +1,36 @@
-# StreetLamp Module
+# Map Index Module
 
 ## Installation
 
 ### Composer.json
 	"require" : {
+		"zendframework/zend-authentication" : "*",
 		"zendframework/zend-db" : "*",
 		"zendframework/zend-i18n" : "*",
 		"zendframework/zend-form" : "*",
 		"zendframework/zend-crypt" : "*",
+		"zendframework/zend-session" : "*",
 	}, 
 	"autoload" : {
 		"psr-4" : {
-			"Streetlamp\\" : "module/Streetlamp/src",
+			"Annotation\\" : "module/Annotation/src",
+			"Mapindex\\" : "modules/Mapindex/src",
 			"Midnet\\" : "module/Midnet/src",
+			"User\\" : "module/User/src",
 		},
 	},
 
 ### modules.config.php
 	return [
+		'Mapindex',
 		'Midnet',
 	   'Streetlamp',
+	   'User',
 	];
 	
 ### local.php
 
-Edit your local.php to include specific settings for your database.  Be sure to enter proper values for host, database name, user and pass.  This module uses a database connection called `streetlamp-model-primary-adapter-config`, which is aliased to `model-primary-adapter-config` in the Street Lamp Module Config.  This allows for one database to hold multiple module tables, or point to different databases.
+Edit your local.php to include specific settings for your database.  Be sure to enter proper values for host, database name, user and pass.  This module uses a database connection called `mapindex-model-primary-adapter-config`, which is aliased to `model-primary-adapter-config` in the Map Index Module Config.  This allows for one database to hold multiple module tables, or point to different databases.
 
 	return [
 		'service_manager' => [
