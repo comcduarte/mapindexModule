@@ -4,9 +4,13 @@ namespace Mapindex\Form;
 use Mapindex\Model\MapindexModel;
 use Zend\Form\Element\Date;
 use Zend\Form\Element\Text;
+use Midnet\Form\Element\DatabaseSelectObject;
+use Zend\Db\Adapter\AdapterAwareTrait;
 
 class MapindexForm extends AbstractBaseForm
 {
+    use AdapterAwareTrait;
+    
     public function initialize()
     {
         parent::initialize();
@@ -21,6 +25,22 @@ class MapindexForm extends AbstractBaseForm
             ],
             'options' => [
                 'label' => 'Map Index',
+            ],
+        ],['priority' => 100]);
+        
+        $this->add([
+            'name' => 'OWNER',
+            'type' => DatabaseSelectObject::class,
+            'attributes' => [
+                'id' => 'OWNER',
+                'class' => 'form-control',
+            ],
+            'options' => [
+                'label' => 'Primary Owner',
+                'database_adapter' => $this->adapter,
+                'database_table' => 'owners',
+                'database_id_column' => 'UUID',
+                'database_value_column' => 'NAME',
             ],
         ],['priority' => 100]);
         

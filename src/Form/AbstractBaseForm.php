@@ -48,7 +48,7 @@ class AbstractBaseForm extends Form
             'type' => Submit::class,
             'attributes' => [
                 'value' => 'Submit',
-                'class' => 'btn btn-primary',
+                'class' => 'btn btn-primary form-control mt-4',
                 'id' => 'SUBMIT',
             ],
         ],['priority' => 0]);

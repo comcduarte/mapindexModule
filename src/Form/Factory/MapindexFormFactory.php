@@ -17,7 +17,7 @@ class MapindexFormFactory implements FactoryInterface
         
         $model = new MapindexModel();
         $form->setInputFilter($model->getInputFilter());
-        
+        $form->setDbAdapter($container->get('mapindex-model-primary-adapter'));
         $form->initialize();
         return $form;
     }

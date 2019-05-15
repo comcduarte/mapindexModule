@@ -7,8 +7,10 @@ use Mapindex\Controller\Factory\ConfigControllerFactory;
 use Mapindex\Controller\Factory\MapindexControllerFactory;
 use Mapindex\Controller\Factory\OwnerControllerFactory;
 use Mapindex\Service\Factory\MapIndexModelPrimaryAdapterFactory;
+use Mapindex\View\Helper\Functions;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -133,6 +135,11 @@ return [
                         'action' => 'create'
                     ],
                     [
+                        'label' => 'Search Maps',
+                        'route' => 'maps/default',
+                        'action' => 'search',
+                    ],
+                    [
                         'label' => 'View Maps',
                         'route' => 'maps',
                     ],
@@ -153,6 +160,11 @@ return [
                         'action' => 'create',
                     ],
                     [
+                        'label' => 'Search Owners',
+                        'route' => 'owners/default',
+                        'action' => 'search',
+                    ],
+                    [
                         'label' => 'View Owners',
                         'route' => 'owners',
                     ],
@@ -170,6 +182,14 @@ return [
         ],
         'factories' => [
             'mapindex-model-primary-adapter' => MapIndexModelPrimaryAdapterFactory::class,
+        ],
+    ],
+    'view_helpers' => [
+        'aliases' => [
+            'functions' => Functions::class,
+        ],
+        'factories' => [
+            Functions::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

@@ -7,7 +7,7 @@
         ?>
         	<div class="card-header d-flex justify-content-between">
         		<div>
-        			<b>Update</b>
+        			<b>Search</b>
         		</div>
         	</div>
         	
@@ -19,30 +19,18 @@
     </div>
     <div class="col-md-6">
     	<?php echo $this->partial('mapindex/partials/subtable.phtml', [
-    	    'title' => 'Owners', 
-    	    'data' => $this->owners, 
+    	    'title' => 'Maps', 
+    	    'data' => $this->data, 
     	    'primary_key' => 'UUID',
-    	    'route' => 'owners/default',
-    	    'map_uuid' => $this->primary_key,
     	    'params' => [
     	        [
-    	            'key' => 'UUID_O',
-    	            'action' => 'update',
-    	            'route' => 'owners/default',
-    	            'label' => 'Update',
-    	        ],
-    	        [
     	            'key' => 'UUID',
-    	            'action' => 'unassign',
+    	            'action' => 'update',
     	            'route' => 'maps/default',
-    	            'label' => 'Unassign',
+    	            'label' => 'Update',
     	        ],
     	    ],
     	]); ?>
-    	
-    	<?php echo $this->partial('mapindex/partials/subform.phtml', [
-    	    'title' => 'Assign Owner', 
-    	    'form' => $this->mapindex_assign_owner_form, 
-    	]); ?>
+
     </div>
 </div>

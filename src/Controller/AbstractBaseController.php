@@ -6,6 +6,7 @@ use Zend\Db\Sql\Where;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\ArrayAdapter;
+use Zend\View\Model\ViewModel;
 
 class AbstractBaseController extends AbstractActionController
 {
@@ -71,6 +72,8 @@ class AbstractBaseController extends AbstractActionController
             return $this->redirect()->toUrl($url);
         }
         
+        $view = new ViewModel();
+        
         $this->model->read([$this->model->getPrimaryKey() => $primary_key]);
         
         $this->form->bind($this->model);
@@ -91,10 +94,12 @@ class AbstractBaseController extends AbstractActionController
             $this->flashmessenger()->addErrorMessage("Form submission was invalid.");
         }
         
-        return ([
+        $view->setVariables([
             'form' => $this->form,
             'primary_key' => $this->model->getPrimaryKey(),
         ]);
+        
+        return ($view);
     }
     
     public function deleteAction()

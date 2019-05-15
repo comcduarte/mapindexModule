@@ -26,7 +26,7 @@ class MapindexModel extends DatabaseObject
         $this->table = 'maps';
     }
     
-    public function assignOwner($owner_uuid)
+    public function assign($owner_uuid)
     {
         $sql = new Sql($this->dbAdapter);
         $uuid = new Uuid();
@@ -58,13 +58,20 @@ class MapindexModel extends DatabaseObject
         return $this;
     }
     
-    public function unassignUser($owner_uuid)
+    public function unassign($owner_uuid = NULL, $join_uuid = NULL)
     {
         $sql = new Sql($this->dbAdapter);
         
         $delete = new Delete();
         $delete->from('maps_owners');
-        $delete->where(['OWNER' => $owner_uuid, 'MAP' => $this->UUID]);
+        
+        if ($owner_uuid != NULL ) {
+//             $delete->where(['OWNER' => $this->UUID, 'MAP' => $map_uuid]);
+        }
+        
+        if ($join_uuid != NULL) {
+            $delete->where(['UUID' => $join_uuid]);
+        }
         
         $statement = $sql->prepareStatementForSqlObject($delete);
         
