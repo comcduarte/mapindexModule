@@ -9,12 +9,59 @@ use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate\Like;
+use Zend\Paginator\Paginator;
+use Zend\Paginator\Adapter\DbSelect;
 use Zend\View\Model\ViewModel;
 use RuntimeException;
 
 
 class MapindexController extends AbstractBaseController
 {
+    public function indexAction()
+    {
+        /****************************************
+         * Use Base Index Action
+         * Saving modifications for later review.
+         ****************************************/
+        $view = new ViewModel();
+        $view = parent::indexAction();
+        return $view;
+
+        /****************************************/
+        $select = new Select();
+        $select->from($this->model->getTableName());
+        $select->order(['DATE_DRAWN']);
+        
+        $select->columns(['UUID','MAP','STREET','SEC_STREET','DATE_DRAWN','DATE_FILED']);
+        
+//         $records = $this->model->fetchAll(new Where());
+//         $paginator = new Paginator(new ArrayAdapter($records));
+
+        $paginator = new Paginator(new DbSelect($select, $this->adapter));
+        $paginator->setCurrentPageNumber($this->params()->fromRoute('page', 1));
+        
+        $count = $this->params()->fromRoute('count', 10);
+        $paginator->setItemCountPerPage($count);
+        
+//         $header = array_keys($records[0]);
+        $header = [
+            'Index',
+            'Street',
+            'Secondary Street',
+            'Drawn',
+            'Filed',
+        ];
+        
+        return ([
+            'data' => $paginator,
+            'header' => $header,
+            'count' => $count,
+            'primary_key' => $this->model->getPrimaryKey(),
+        ]);
+        
+        
+    }
+    
     public function updateAction()
     {
         $primary_key = $this->params()->fromRoute(strtolower($this->model->getPrimaryKey()),0);
@@ -27,10 +74,10 @@ class MapindexController extends AbstractBaseController
         
         $view = new ViewModel();
         $view = parent::updateAction();
-        
-        /**
-         * Retrieve Owners Subtable 
-         */
+
+        /****************************************
+         *          Retrieve Owners Subtable
+         ****************************************/
         $sql = new Sql($this->adapter);
         
         $select = new Select();

@@ -9,8 +9,7 @@ if (sizeof($data) === 0) {
 	<thead>
 		<tr>
 	<?php 
-	   $header = array_keys($this->data[0]); 
-	   foreach ($header as $key) {
+	   foreach ($this->header as $key) {
 	       if ($key == $this->primary_key) { continue; }
 	       echo "<th>$key</th>";
 	   }
@@ -40,4 +39,5 @@ if (sizeof($data) === 0) {
 		<?php endforeach; ?>
 	</tbody>
 	</table>
+	<?php // echo $this->paginationControl($this->data, 'Sliding', '/mapindex/partials/paginator.phtml', ['count' => $this->count]) ?>
 </div>

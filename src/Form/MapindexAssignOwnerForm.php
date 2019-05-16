@@ -22,7 +22,7 @@ class MapindexAssignOwnerForm extends AbstractBaseForm
                 'required' => 'true',
             ],
             'options' => [
-                'label' => 'Primary Owner',
+                'label' => 'Owner',
                 'database_adapter' => $this->adapter,
                 'database_table' => 'owners',
                 'database_id_column' => 'UUID',

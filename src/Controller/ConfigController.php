@@ -9,6 +9,7 @@ use Midnet\Model\Uuid;
 use Zend\Db\Adapter\AdapterAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Exception;
 
 class ConfigController extends AbstractActionController
 {
@@ -37,6 +38,9 @@ class ConfigController extends AbstractActionController
     public function clearAction()
     {
         $this->clearDatabaseTables();
+        
+        
+        $this->flashMessenger()->addSuccessMessage('Database tables cleared.');
         return $this->redirect()->toRoute('maps/config');
     }
     
@@ -58,9 +62,11 @@ class ConfigController extends AbstractActionController
             $statement->execute();
         }
     }
-    
+      
     public function importDatabaseTable()
     {
+        ini_set('memory_limit', '512M');
+        
         $form = new UploadFileForm();
         $form->initialize();
         $form->addInputFilter();
@@ -114,7 +120,7 @@ class ConfigController extends AbstractActionController
                                 
                                 $owner->create();
                                 
-                                $index->assignOwner($owner->UUID);
+                                $index->assign($owner->UUID);
                                 continue 2;
                                 break;
                             default:
@@ -150,7 +156,7 @@ class ConfigController extends AbstractActionController
                         
                         $index->create();
                         
-                        $index->assignOwner($owner->UUID);
+                        $index->assign($owner->UUID);
                         
                         
                         
@@ -158,7 +164,7 @@ class ConfigController extends AbstractActionController
                         $row++;
                         /****************************************
                          *            Temporary Break
-                         ****************************************/
+                         ****************************************
                          if ($row >= 15) {
                             break;
                          }

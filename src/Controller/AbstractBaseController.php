@@ -25,8 +25,11 @@ class AbstractBaseController extends AbstractActionController
         $count = $this->params()->fromRoute('count', 15);
         $paginator->setItemCountPerPage($count);
         
+        $header = array_keys($records[0]); 
+        
         return ([
             'data' => $records,
+            'header' => $header,
             'count' => $count,
             'primary_key' => $this->model->getPrimaryKey(),
         ]);

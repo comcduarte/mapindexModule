@@ -141,7 +141,8 @@ return [
                     ],
                     [
                         'label' => 'View Maps',
-                        'route' => 'maps',
+                        'route' => 'maps/default',
+                        'action' => 'index',
                     ],
                     [
                         'label' => 'Settings',

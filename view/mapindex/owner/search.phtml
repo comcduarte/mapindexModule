@@ -7,7 +7,7 @@
         ?>
         	<div class="card-header d-flex justify-content-between">
         		<div>
-        			<b>Update</b>
+        			<b>Search</b>
         		</div>
         	</div>
         	
@@ -19,23 +19,15 @@
     </div>
     <div class="col-md-6">
     	<?php echo $this->partial('mapindex/partials/subtable.phtml', [
-    	    'title' => 'Maps', 
-    	    'data' => $this->maps, 
+    	    'title' => 'Owners', 
+    	    'data' => $this->data, 
     	    'primary_key' => 'UUID',
-    	    'route' => 'maps/default',
-    	    'owner_uuid' => $this->primary_key,
     	    'params' => [
     	        [
-    	            'key' => 'UUID_M',
-    	            'action' => 'update',
-    	            'route' => 'maps/default',
-    	            'label' => 'Update',
-    	        ],
-    	        [
     	            'key' => 'UUID',
-    	            'action' => 'unassign',
-    	            'route' => 'maps/default',
-    	            'label' => 'Unassign',
+    	            'action' => 'update',
+    	            'route' => 'owners/default',
+    	            'label' => 'Update',
     	        ],
     	    ],
     	]); ?>
