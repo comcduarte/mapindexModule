@@ -15,6 +15,7 @@ class MapindexModel extends DatabaseObject
     public $NUMBER;
     public $STREET;
     public $SEC_STREET;
+    public $IMAGE_LOC;
     public $DATE_DRAWN;
     public $DATE_FILED;
     
@@ -83,4 +84,28 @@ class MapindexModel extends DatabaseObject
         return $this;
     }
     
+    public function setImage()
+    {
+        /****************************************
+         *            Retrieve Images
+         ****************************************/
+        if (!stripos($this->MAP,'-')) {
+            $this->flashMessenger()->addErrorMessage('Failure: Unable to retrieve image for ' . $this->MAP);
+            return $this;
+        }
+        
+        $img_dir = explode("-", $this->MAP);
+        $url = sprintf('http://mimas:8001/%s/map00%s.tif', $img_dir[1], $img_dir[0]);
+        if (($imghandle = fopen($url,"r")) !== FALSE) {
+            $im = new \Imagick();
+            $im->readimage($url);
+            $im->setimageformat('jpeg');
+            $im->writeimage('./data/maps/temp.jpg');
+            $im->destroy();
+            
+            fclose($imghandle);
+        }
+        
+        return $this;
+    }
 }

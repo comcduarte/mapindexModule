@@ -170,6 +170,7 @@ class MapindexController extends AbstractBaseController
                 
                 $select = new Select();
                 $select->columns(['UUID','MAP','STREET','SEC_STREET']);
+                $select->join('owners', 'maps.OWNER = owners.UUID', ['Name' => 'NAME'], Join::JOIN_INNER);
                 $select->from($this->model->getTableName());
                 
                 

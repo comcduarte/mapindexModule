@@ -2,11 +2,13 @@
 namespace Mapindex\Form;
 
 use Zend\Form\Form;
+use Zend\Form\Element\Checkbox;
 use Zend\Form\Element\Csrf;
 use Zend\Form\Element\File;
 use Zend\Form\Element\Submit;
-use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Text;
 use Zend\InputFilter\FileInput;
+use Zend\InputFilter\InputFilter;
 
 class UploadFileForm extends Form
 {
@@ -24,6 +26,33 @@ class UploadFileForm extends Form
             ],
         ]);
         
+        $this->add([
+            'name' => 'BREAK',
+            'type' => Checkbox::class,
+            'options' => [
+                'label' => 'Break',
+                'checked_value' => 'yes',
+                'unchecked_value' => 'no',
+            ],
+            'attributes' => [
+                'value' => 'yes',
+                'class' => 'form-control mt-4',
+            ],
+        ]);
+        
+        $this->add([
+            'name' => 'BREAK_ON',
+            'type' => Text::class,
+            'options' => [
+                'label' => 'Break On',
+            ],
+            'attributes' => [
+                'class' => 'form-control',
+                'value' => 20,
+            ],
+        ]);
+        
+        
         $this->add(new Csrf('SECURITY'));
         
         $this->add([
@@ -31,7 +60,7 @@ class UploadFileForm extends Form
             'type' => Submit::class,
             'attributes' => [
                 'value' => 'Submit',
-                'class' => 'btn btn-primary',
+                'class' => 'btn btn-primary form-control',
                 'id' => 'SUBMIT',
             ],
         ]);

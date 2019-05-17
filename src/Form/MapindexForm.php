@@ -2,10 +2,11 @@
 namespace Mapindex\Form;
 
 use Mapindex\Model\MapindexModel;
-use Zend\Form\Element\Date;
-use Zend\Form\Element\Text;
 use Midnet\Form\Element\DatabaseSelectObject;
 use Zend\Db\Adapter\AdapterAwareTrait;
+use Zend\Form\Element\Date;
+use Zend\Form\Element\Hidden;
+use Zend\Form\Element\Text;
 
 class MapindexForm extends AbstractBaseForm
 {
@@ -83,12 +84,23 @@ class MapindexForm extends AbstractBaseForm
         ],['priority' => 100]);
         
         $this->add([
+            'name' => 'IMAGE_LOC',
+            'type' => Hidden::class,
+            'attributes' => [
+                'id' => 'IMAGE_LOC',
+                'class' => 'form-control',
+            ],
+            'options' => [
+                'label' => 'Image Location',
+            ],
+        ],['priority' => 100]);
+        
+        $this->add([
             'name' => 'DATE_DRAWN',
             'type' => Date::class,
             'attributes' => [
                 'id' => 'DATE_DRAWN',
                 'class' => 'form-control',
-                'required' => 'true',
             ],
             'options' => [
                 'label' => 'Date Drawn',
@@ -101,7 +113,6 @@ class MapindexForm extends AbstractBaseForm
             'attributes' => [
                 'id' => 'DATE_FILED',
                 'class' => 'form-control',
-                'required' => 'true',
             ],
             'options' => [
                 'label' => 'Date Field',

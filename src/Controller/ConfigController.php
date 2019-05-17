@@ -6,10 +6,12 @@ use Mapindex\Form\UploadFileForm;
 use Mapindex\Model\MapindexModel;
 use Mapindex\Model\OwnerModel;
 use Midnet\Model\Uuid;
+use PHPUnit\Framework\Constraint\FileExists;
 use Zend\Db\Adapter\AdapterAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Validator\Db\RecordExists;
 use Zend\View\Model\ViewModel;
-use Exception;
+use Imagick;
 
 class ConfigController extends AbstractActionController
 {
@@ -92,6 +94,17 @@ class ConfigController extends AbstractActionController
                 $owner = new OwnerModel($this->adapter);
                 $previous_uuid = null;
                 
+                //-- Database Validators --//
+                $validator = new RecordExists([
+                    'table' => $owner->getTableName(),
+                    'field' => 'NAME',
+                    'adapter' => $this->adapter,
+                ]);
+                $validator->setAdapter($this->adapter);
+                $validator->setField('NAME');
+                $validator->setTable($owner->getTableName());
+                
+                $file_validator = new FileExists();
                 
                 //-- Define CSV Position variables --//
                 $MAP = 0;
@@ -106,23 +119,50 @@ class ConfigController extends AbstractActionController
                 $row = 0;
                 if (($handle = fopen($data['FILE']['tmp_name'],"r")) !== FALSE) {
                     //-- Read record from file --//
-                    while (($record = fgetcsv($handle, 1000, ",")) !== FALSE) {
+//                     while (($record = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    while ($s = fgets($handle, 1024)) {
+                        $record = [];
+                        /****************************************
+                         * Begin Fixed Width Parsing
+                         ****************************************/
+                        $record[$MAP] = trim(substr($s, 11, 10));
+                        $record[$OWNER] = trim(substr($s, 20, 30));
+                        $record[$NUMBER] = trim(substr($s, 51, 6));
+                        $record[$STREET] = trim(substr($s, 58, 20));
+                        $record[$SEC_STREET] = trim(substr($s, 79, 20));
+                        $record[$DATE_DRAWN] = trim(substr($s, 100, 11));
+                        $record[$DATE_FILED] = trim(substr($s, 112, 11));
+                        
+                        
                         /****************************************
                          * If KEY is null, this is a blank line, skip and continue.
                          ****************************************/
+                        if ($record[$OWNER] == '') {
+                            continue;
+                        }
                         switch ($record[$MAP]) {
                             case '':
                                 //-- Added Owner to Previous Map --//
-                                $owner->UUID = $uuid->generate()->value;
-                                $owner->NAME = $record[$OWNER];
-                                $owner->STATUS = $owner::ACTIVE_STATUS;
-                                $owner->DATE_CREATED = $today;
-                                
-                                $owner->create();
+                                if ($validator->isValid($record[$OWNER])) {
+                                    //-- Owner already exists in table --//
+                                    $owner->read(['NAME' => $record[$OWNER]]);
+                                } else {
+                                    //-- New owner needs to be created --//
+                                    $owner->UUID = $uuid->generate()->value;
+                                    $owner->NAME = $record[$OWNER];
+                                    $owner->STATUS = $owner::ACTIVE_STATUS;
+                                    $owner->DATE_CREATED = $today;
+                                    
+                                    $owner->create();
+                                }
                                 
                                 $index->assign($owner->UUID);
                                 continue 2;
                                 break;
+                            case 'MAP':
+                            case '----------':
+                                //-- Header --//
+                                continue 2;
                             default:
                                 break;
                         }
@@ -130,12 +170,18 @@ class ConfigController extends AbstractActionController
                         /****************************************
                          *              Owner Model
                          ****************************************/
-                        $owner->UUID = $uuid->generate()->value;
-                        $owner->NAME = $record[$OWNER];
-                        $owner->STATUS = $owner::ACTIVE_STATUS;
-                        $owner->DATE_CREATED = $today;
-                        
-                        $owner->create();
+                        if ($validator->isValid($record[$OWNER])) {
+                            //-- Owner already exists in table --//
+                            $owner->read(['NAME' => $record[$OWNER]]);
+                        } else {
+                            //-- New owner needs to be created --//
+                            $owner->UUID = $uuid->generate()->value;
+                            $owner->NAME = $record[$OWNER];
+                            $owner->STATUS = $owner::ACTIVE_STATUS;
+                            $owner->DATE_CREATED = $today;
+                            
+                            $owner->create();
+                        }
                         
                         /****************************************
                          *            Map Index Model
@@ -145,8 +191,15 @@ class ConfigController extends AbstractActionController
                         $index->NUMBER = $record[$NUMBER];
                         $index->STREET = $record[$STREET];
                         $index->SEC_STREET = $record[$SEC_STREET];
-                        $index->DATE_DRAWN = date('Y-m-d H:i:s',strtotime($record[$DATE_DRAWN]));
-                        $index->DATE_FILED = date('Y-m-d H:i:s',strtotime($record[$DATE_FILED]));
+                        
+                        $drawn = \DateTime::createFromFormat('d-M-Y', $record[$DATE_DRAWN]);
+                        $index->DATE_DRAWN = date_format($drawn, 'Y-m-d');
+                        
+                        $filed = \DateTime::createFromFormat('d-M-Y', $record[$DATE_FILED]);
+                        $index->DATE_FILED = date_format($filed, 'Y-m-d');
+                        
+//                         $index->DATE_DRAWN = date('Y-m-d H:i:s',strtotime($record[$DATE_DRAWN]));
+//                         $index->DATE_FILED = date('Y-m-d H:i:s',strtotime($record[$DATE_FILED]));
                         
                         $index->UUID = $uuid->generate()->value;
                         $index->DATE_CREATED = $today;
@@ -158,14 +211,11 @@ class ConfigController extends AbstractActionController
                         
                         $index->assign($owner->UUID);
                         
-                        
-                        
-                        
-                        $row++;
                         /****************************************
                          *            Temporary Break
-                         ****************************************
-                         if ($row >= 15) {
+                         ****************************************/
+                         $row++;
+                         if ($data['BREAK'] == 'yes' && $row >= $data['BREAK_ON']) {
                             break;
                          }
                          /****************************************/
