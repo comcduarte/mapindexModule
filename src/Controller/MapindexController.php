@@ -25,7 +25,7 @@ class MapindexController extends AbstractBaseController
          ****************************************/
         $view = new ViewModel();
         $view = parent::indexAction();
-        return $view;
+//         return $view;
 
         /****************************************/
         $select = new Select();
@@ -40,7 +40,7 @@ class MapindexController extends AbstractBaseController
         $paginator = new Paginator(new DbSelect($select, $this->adapter));
         $paginator->setCurrentPageNumber($this->params()->fromRoute('page', 1));
         
-        $count = $this->params()->fromRoute('count', 10);
+        $count = $this->params()->fromRoute('count', 100000);
         $paginator->setItemCountPerPage($count);
         
 //         $header = array_keys($records[0]);
@@ -52,14 +52,20 @@ class MapindexController extends AbstractBaseController
             'Filed',
         ];
         
-        return ([
-            'data' => $paginator,
+        $view->setVariables([
             'header' => $header,
             'count' => $count,
-            'primary_key' => $this->model->getPrimaryKey(),
+            'data' => $paginator,
         ]);
         
+//         return ([
+//             'data' => $paginator,
+//             'header' => $header,
+//             'count' => $count,
+//             'primary_key' => $this->model->getPrimaryKey(),
+//         ]);
         
+        return $view;
     }
     
     public function updateAction()

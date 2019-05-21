@@ -17,6 +17,8 @@ class AbstractBaseController extends AbstractActionController
     
     public function indexAction()
     {
+        $view = new ViewModel();
+        
         $records = $this->model->fetchAll(new Where());
         
         $paginator = new Paginator(new ArrayAdapter($records));
@@ -27,12 +29,13 @@ class AbstractBaseController extends AbstractActionController
         
         $header = array_keys($records[0]); 
         
-        return ([
+        $view->setvariables ([
             'data' => $records,
             'header' => $header,
             'count' => $count,
             'primary_key' => $this->model->getPrimaryKey(),
         ]);
+        return $view;
     }
     
     public function createAction()

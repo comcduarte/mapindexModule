@@ -11,7 +11,6 @@ use Zend\Db\Adapter\AdapterAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\Db\RecordExists;
 use Zend\View\Model\ViewModel;
-use Imagick;
 
 class ConfigController extends AbstractActionController
 {
