@@ -27,7 +27,10 @@ class AbstractBaseController extends AbstractActionController
         $count = $this->params()->fromRoute('count', 15);
         $paginator->setItemCountPerPage($count);
         
-        $header = array_keys($records[0]); 
+        $header = [];
+        if (!empty($records)) {
+            $header = array_keys($records[0]); 
+        }
         
         $view->setvariables ([
             'data' => $records,
@@ -40,6 +43,8 @@ class AbstractBaseController extends AbstractActionController
     
     public function createAction()
     {
+        $view = new ViewModel();
+        
         $request = $this->getRequest();
         $this->form->bind($this->model);
         
@@ -63,9 +68,12 @@ class AbstractBaseController extends AbstractActionController
             return $this->redirect()->toUrl($url);
         }
         
-        return ([
+        $view->setVariables([
             'form' => $this->form,
+            'title' => 'Add New Record',
         ]);
+        
+        return ($view);
     }
     
     public function updateAction()
@@ -102,6 +110,7 @@ class AbstractBaseController extends AbstractActionController
         
         $view->setVariables([
             'form' => $this->form,
+            'title' => 'Update Record',
             'primary_key' => $this->model->getPrimaryKey(),
         ]);
         
