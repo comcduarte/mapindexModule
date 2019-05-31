@@ -98,7 +98,12 @@ return [
     ],
     'acl' => [
         'guest' => [
-            'maps' => ['index'],
+        ],
+        'member' => [
+            'maps/default' => ['index','create','update','delete','search'],
+            'owners/default' => ['index','create','update','delete','search'],
+            'reports' => ['index','create','update','delete','view'],
+            'reports/default' => ['index','create','update','delete','view'],
         ],
         'admin' => [
             'maps/config' => ['index'],
