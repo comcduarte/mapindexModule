@@ -101,6 +101,7 @@ return [
         ],
         'member' => [
             'maps/default' => ['index','create','update','delete','search'],
+            'owners' => ['index'],
             'owners/default' => ['index','create','update','delete','search'],
             'reports' => ['index','create','update','delete','view'],
             'reports/default' => ['index','create','update','delete','view'],
