@@ -105,7 +105,7 @@ return [
             'owners/default' => ['index','create','update','delete','search'],
             'reports' => ['index','create','update','delete','view'],
             'reports/default' => ['index','create','update','delete','view'],
-            'maps/config' => ['index'],
+            'maps/config' => ['index','clear'],
             'maps/import' => ['import'],
         ],
         'admin' => [
