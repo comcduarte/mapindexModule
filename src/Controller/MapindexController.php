@@ -13,6 +13,7 @@ use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\View\Model\ViewModel;
 use RuntimeException;
+use Mapindex\Model\MapindexModel;
 
 
 class MapindexController extends AbstractBaseController
@@ -176,7 +177,7 @@ class MapindexController extends AbstractBaseController
                 
                 $select = new Select();
                 $select->columns(['UUID','MAP','STREET','SEC_STREET']);
-                $select->join('owners', 'maps.OWNER = owners.UUID', ['Name' => 'NAME'], Join::JOIN_INNER);
+                $select->join('owners', 'maps.OWNER = owners.UUID', ['Name' => 'NAME'], Join::JOIN_LEFT);
                 $select->from($this->model->getTableName());
                 
                 
@@ -191,7 +192,18 @@ class MapindexController extends AbstractBaseController
                 }
                 
                 $predicate = new Where();
-                $predicate->like('STREET', $search_string)->or->like('SEC_STREET', $search_string);
+                
+                switch ($data['BY']) {
+                    case "Index":
+                        $predicate->like('MAP', $search_string);
+                        break;
+                    case "Street":
+                    default:
+                        $predicate->like('STREET', $search_string)->or->like('SEC_STREET', $search_string);
+                        break;
+                }
+                
+                $predicate->equalTo('maps.STATUS',MapindexModel::ACTIVE_STATUS);
                 
                 $select->where($predicate);
                 $select->order('MAP');

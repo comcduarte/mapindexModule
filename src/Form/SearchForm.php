@@ -5,6 +5,7 @@ use Zend\Form\Form;
 use Zend\Form\Element\Csrf;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
+use Zend\Form\Element\Select;
 
 class SearchForm extends Form
 {
@@ -20,6 +21,23 @@ class SearchForm extends Form
             ],
             'options' => [
                 'label' => 'Find',
+            ],
+        ],['priority' => 100]);
+        
+        $this->add([
+            'name' => 'BY',
+            'type' => Select::class,
+            'attributes' => [
+                'id' => 'BY',
+                'class' => 'form-control',
+                'required' => 'true',
+            ],
+            'options' => [
+                'label' => 'Search By',
+                'value_options' => [
+                    "Street" => "Street",
+                    "Index" => "Index",
+                ],
             ],
         ],['priority' => 100]);
         

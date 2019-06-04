@@ -100,7 +100,7 @@ return [
         'guest' => [
         ],
         'member' => [
-            'maps/default' => ['index','create','update','delete','search'],
+            'maps/default' => ['index','create','update','delete','search', 'assign'],
             'owners' => ['index'],
             'owners/default' => ['index','create','update','delete','search'],
             'reports' => ['index','create','update','delete','view'],
