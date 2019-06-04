@@ -106,6 +106,7 @@ return [
             'reports' => ['index','create','update','delete','view'],
             'reports/default' => ['index','create','update','delete','view'],
             'maps/config' => ['index'],
+            'maps/import' => ['import'],
         ],
         'admin' => [
             'maps/config' => ['index'],
