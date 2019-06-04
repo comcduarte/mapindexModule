@@ -181,11 +181,15 @@ class ConfigController extends AbstractActionController
                         $index->STREET = $record[$STREET];
                         $index->SEC_STREET = $record[$SEC_STREET];
                         
-                        $drawn = date_create_from_format('d-M-Y', $record[$DATE_DRAWN]);
-                        $index->DATE_DRAWN = date_format($drawn, 'Y-m-d');
+                        if (!empty($record[$DATE_DRAWN])) {
+                            $drawn = date_create_from_format('d-M-Y', $record[$DATE_DRAWN]);
+                            $index->DATE_DRAWN = date_format($drawn, 'Y-m-d');
+                        }
                         
-                        $filed = date_create_from_format('d-M-Y', $record[$DATE_FILED]);
-                        $index->DATE_FILED = date_format($filed, 'Y-m-d');
+                        if (!empty($record[$DATE_FILED])) {
+                            $filed = date_create_from_format('d-M-Y', $record[$DATE_FILED]);
+                            $index->DATE_FILED = date_format($filed, 'Y-m-d');
+                        }
                         
                         $index->UUID = $uuid->generate()->value;
                         $index->DATE_CREATED = $today;
