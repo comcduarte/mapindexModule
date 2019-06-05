@@ -72,6 +72,7 @@ class OwnerController extends AbstractBaseController
         
         $searchform = new SearchForm();
         $searchform->initialize();
+        $searchform->remove('BY');
         
         $request = $this->getRequest();
         if ($request->isPost()) {
