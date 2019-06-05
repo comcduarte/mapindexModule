@@ -115,7 +115,7 @@ class MapindexForm extends AbstractBaseForm
                 'class' => 'form-control',
             ],
             'options' => [
-                'label' => 'Date Field',
+                'label' => 'Date Filed',
             ],
         ],['priority' => 100]);
         
