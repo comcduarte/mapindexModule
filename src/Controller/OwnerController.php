@@ -9,7 +9,7 @@ use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate\Like;
 use Zend\View\Model\ViewModel;
-use RuntimeException;
+use Exception;
 
 class OwnerController extends AbstractBaseController
 {
@@ -115,7 +115,7 @@ class OwnerController extends AbstractBaseController
                 try {
                     $results = $statement->execute();
                     $resultSet->initialize($results);
-                } catch (RuntimeException $e) {
+                } catch (Exception $e) {
                     return $e;
                 }
                 

@@ -6,7 +6,7 @@ use Midnet\Model\Uuid;
 use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
-use RuntimeException;
+use Exception;
 
 class OwnerModel extends DatabaseObject
 {
@@ -46,7 +46,7 @@ class OwnerModel extends DatabaseObject
         
         try {
             $statement->execute();
-        } catch (RuntimeException $e) {
+        } catch (Exception $e) {
             return $e;
         }
         return $this;
@@ -71,7 +71,7 @@ class OwnerModel extends DatabaseObject
         
         try {
             $statement->execute();
-        } catch (RuntimeException $e) {
+        } catch (Exception $e) {
             return $e;
         }
         return $this;

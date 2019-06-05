@@ -12,7 +12,7 @@ use Zend\Db\Sql\Predicate\Like;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\View\Model\ViewModel;
-use RuntimeException;
+use Exception;
 use Mapindex\Model\MapindexModel;
 
 
@@ -217,7 +217,7 @@ class MapindexController extends AbstractBaseController
                 try {
                     $results = $statement->execute();
                     $resultSet->initialize($results);
-                } catch (RuntimeException $e) {
+                } catch (Exception $e) {
                     return $e;
                 }
                 

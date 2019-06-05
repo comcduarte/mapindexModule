@@ -6,7 +6,7 @@ use Midnet\Model\Uuid;
 use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
-use RuntimeException;
+use Exception;
 
 class MapindexModel extends DatabaseObject
 {
@@ -53,7 +53,7 @@ class MapindexModel extends DatabaseObject
         
         try {
             $statement->execute();
-        } catch (RuntimeException $e) {
+        } catch (Exception $e) {
             return $e;
         }
         return $this;
@@ -78,7 +78,7 @@ class MapindexModel extends DatabaseObject
         
         try {
             $statement->execute();
-        } catch (RuntimeException $e) {
+        } catch (Exception $e) {
             return $e;
         }
         return $this;
